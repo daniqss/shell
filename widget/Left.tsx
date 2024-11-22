@@ -1,11 +1,12 @@
 import { bind, execAsync } from "astal";
 import Hyprland from "gi://AstalHyprland";
+import { Gtk } from "astal/gtk3";
 
 export default function Left() {
   const hypr = Hyprland.get_default();
 
   return (
-    <box className="Left">
+    <box className="Left" hexpand halign={Gtk.Align.START}>
       <Workspaces hypr={hypr} />
       <FocusedClient hypr={hypr} />
     </box>

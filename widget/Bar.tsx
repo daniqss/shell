@@ -1,8 +1,7 @@
 import { App, Astal, Gtk, Gdk } from "astal/gtk3";
-import { Variable } from "astal";
 import Left from "./Left";
-
-const time = Variable("").poll(1000, "date");
+import Center from "./Center";
+import Right from "./Right";
 
 export default function Bar(gdkmonitor: Gdk.Monitor) {
   return (
@@ -19,16 +18,8 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
     >
       <centerbox>
         <Left />
-        <button onClicked="echo hello" halign={Gtk.Align.CENTER}>
-          Welcome to AGS!
-        </button>
-        <box />
-        <button onClick={() => print("hello")} halign={Gtk.Align.CENTER}>
-          <label label={time()} />
-        </button>
-        <box className="right box">
-          <label label="battery" />
-        </box>
+        <Center />
+        <Right />
       </centerbox>
     </window>
   );
