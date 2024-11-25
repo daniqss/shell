@@ -1,6 +1,8 @@
-import { bind, execAsync } from "astal";
-import Hyprland from "gi://AstalHyprland";
+import { bind } from "astal";
 import { Gtk } from "astal/gtk3";
+import Hyprland from "gi://AstalHyprland";
+import defaultApp from "../logic/default-app";
+import { moveToWorkspaceSilent } from "../logic/workspace";
 
 export default function Left() {
   const hypr = Hyprland.get_default();
@@ -23,12 +25,18 @@ function Workspaces({ hypr }: { hypr: Hyprland.Hyprland }) {
 
           return (
             <button
-              className={bind(hypr, "focusedWorkspace").as((fw) =>
-                workspace === fw ? "focused" : ""
+              className={bind(hypr, "focusedWorkspace").as((focused) =>
+                workspace === focused ? "focused" : ""
               )}
-              onClicked={() =>
-                execAsync(["hyprqtile", "workspace", id.toString()])
-              }
+              onClick={(_, event) => {
+                console.log(event.button);
+                switch (event.button) {
+                  case 1:
+                    moveToWorkspaceSilent(id);
+                  case 3:
+                    defaultApp(id);
+                }
+              }}
             >
               {id}
             </button>

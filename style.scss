@@ -1,93 +1,99 @@
-$bg: #212223;
-$fg: #f1f1f1;
-$accent: #378DF7;
+@use "sass:color";
+
+$bg: #0c0c0c;
+$fg: #F5E0DC;;
+$accent: #F5E0DC;;
 $radius: 7px;
 
 window.Bar {
-  border: none;
-  box-shadow: none;
-  background-color: $bg;
-  color: $fg;
-  font-family: "Firacode Nerd Font";
-  font-size: 1.0em;
-  font-weight: bold;
-
-  #workspaces {
-    margin: 0 2px;
-    padding: 2px;
-    background-color: $bg;
-    border-radius: $radius;
-
-    button {
-      all: unset;
-      min-width: 0;
-      padding: 4px 10px;
-      margin: 2px;
-      color: $fg;
-      border-radius: $radius;
-      background-color: transparent;
-
-      &:hover {
-        color: $bg;
-        background-color: $fg;
-        box-shadow: 0 0 0 1px lighten($bg, 10%);
-      }
-
-      &.active {
-        color: $bg;
-        background-color: $fg;
-        box-shadow: 0 0 0 1px lighten($bg, 10%);
-      }
-
-      &.urgent {
-        color: $bg;
-        background-color: #f38ba8;
-        box-shadow: 0 0 0 1px lighten($bg, 10%);
-      }
-    }
-  }
-
-  #custom-updates,
-  #cpu,
-  #memory,
-  #battery,
-  #bluetooth,
-  #wireplumber,
-  #network,
-  #clock,
-  #tray,
-  #window,
-  #custom-power {
-    margin: 0 4px;
-    padding: 6px 12px;
+    font-family: 'Firacode Nerd Font';
+    border: none;
+    box-shadow: none;
     background-color: $bg;
     color: $fg;
-    border-radius: $radius;
+    font-size: 1em;
+    font-weight: bold;
 
-    &.warning,
-    &.critical,
-    &.urgent,
-    &.charging {
-      background-color: $bg;
-      color: $fg;
+    button {
+        all: unset;
+        background-color: $bg;
+        
+
+        &:hover label {
+            background-color: $fg;
+            color: $bg;
+        }
+
+        // &:active label {
+        //   background-color: $fg;
+        //   color: #aa3388;      
+        // }
     }
-  }
-
-  #battery {
-    margin: 0 2px 0 0;
-    padding: 0 12px;
-  }
-
-  #bluetooth {
-    margin: 0 0 0 2px;
-  }
-
-  tooltip {
-    background-color: $bg;
 
     label {
-      padding: 4px;
-      color: $fg;
+        transition: 200ms;
+        padding: 4px 10px;
+        margin: 2px;
+        border-radius: $radius;
     }
-  }
+
+    .Workspaces {
+        margin: 0 2px 0 2px;
+        padding: 2px;
+        .focused label {
+            background-color: $fg;
+            color: $bg;   
+        }
+    }
+
+
+    .Focused {
+        color: $accent;
+    }
+
+    .Media .Cover {
+        min-height: 1.2em;
+        min-width: 1.2em;
+        border-radius: $radius;
+        background-position: center;
+        background-size: contain;
+    }
+
+    .Battery label {
+        padding-left: 0;
+        margin-left: 0;
+    }
+
+    .AudioSlider {
+        * {
+            all: unset;
+        }
+
+        icon {
+            margin-right: .6em;
+        }
+
+        & {
+            margin: 0 1em;
+        }
+
+        trough {
+            background-color: color.adjust($fg, $alpha: -0.8);
+            border-radius: $radius;
+        }
+
+        highlight {
+            background-color: $accent;
+            min-height: .8em;
+            border-radius: $radius;
+        }
+
+        slider {
+            background-color: $fg;
+            border-radius: $radius;
+            min-height: 1em;
+            min-width: 1em;
+            margin: -.2em;
+        }
+    }
 }

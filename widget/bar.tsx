@@ -1,7 +1,7 @@
-import { App, Astal, Gtk, Gdk } from "astal/gtk3";
-import Left from "./Left";
-import Center from "./Center";
-import Right from "./Right";
+import { App, Astal, Gdk } from "astal/gtk3";
+import Left from "./left";
+import Center from "./center";
+import Right from "./right";
 
 export default function Bar(gdkmonitor: Gdk.Monitor) {
   return (
