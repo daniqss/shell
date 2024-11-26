@@ -13,7 +13,7 @@ WIP shell made with [astal](https://aylur.github.io/astal/) and [ags](https://ay
 you must need some dependencies
 - ags
 - astal
-- hyprqtile (if you don't want it, just change [the Workspaces widget](src/widgets/left.tsx))
+- hyprqtile (if you don't want it, just change [the Workspaces widget](widgets/left.tsx))
 - dart-sass
 
 ```bash
