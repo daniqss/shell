@@ -1,7 +1,14 @@
-import { App, Astal, Gdk } from "astal/gtk3";
-import Left from "./left";
-import Center from "./center";
-import Right from "./right";
+import { App, Astal, Gdk, Gtk } from "astal/gtk3";
+import { FocusedClient, Workspaces } from "./left";
+import { Clock } from "./center";
+import {
+  SysTray,
+  UpdatesIcon,
+  NetworkIcon,
+  BluetoothIcon,
+  BatteryIcon,
+  AudioIcon,
+} from "./right";
 
 export default function Bar(gdkmonitor: Gdk.Monitor) {
   return (
@@ -16,11 +23,31 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
       }
       application={App}
     >
-      <centerbox>
-        <Left />
-        <Center />
-        <Right />
-      </centerbox>
+      <centerbox
+        startWidget={
+          <box className="Left" hexpand halign={Gtk.Align.START}>
+            <Workspaces />
+            <FocusedClient />
+          </box>
+        }
+        centerWidget={
+          <box className="Center" halign={Gtk.Align.CENTER}>
+            <Clock />
+          </box>
+        }
+        endWidget={
+          <box className="Right" halign={Gtk.Align.END}>
+            <SysTray />
+            <UpdatesIcon />
+            <AudioIcon />
+            <box className="SysMenu">
+              <NetworkIcon />
+              <BluetoothIcon />
+              <BatteryIcon />
+            </box>
+          </box>
+        }
+      />
     </window>
   );
 }

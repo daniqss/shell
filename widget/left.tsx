@@ -1,21 +1,11 @@
 import { bind } from "astal";
-import { Gtk } from "astal/gtk3";
 import Hyprland from "gi://AstalHyprland";
 import defaultApp from "../logic/default_app";
 import { moveToWorkspaceSilent } from "../logic/workspace";
 
-export default function Left() {
+export function Workspaces() {
   const hypr = Hyprland.get_default();
 
-  return (
-    <box className="Left" hexpand halign={Gtk.Align.START}>
-      <Workspaces hypr={hypr} />
-      <FocusedClient hypr={hypr} />
-    </box>
-  );
-}
-
-function Workspaces({ hypr }: { hypr: Hyprland.Hyprland }) {
   return (
     <box className="Workspaces">
       {bind(hypr, "workspaces").as((wss) => {
@@ -46,7 +36,8 @@ function Workspaces({ hypr }: { hypr: Hyprland.Hyprland }) {
   );
 }
 
-function FocusedClient({ hypr }: { hypr: Hyprland.Hyprland }) {
+export function FocusedClient() {
+  const hypr = Hyprland.get_default();
   const focused = bind(hypr, "focusedClient");
 
   return (

@@ -1,5 +1,5 @@
 import { App, Gtk } from "astal/gtk3";
-import { bind, execAsync, Variable } from "astal";
+import { bind, Variable } from "astal";
 import { Gdk } from "astal/gtk3";
 import Battery from "gi://AstalBattery";
 import Wp from "gi://AstalWp";
@@ -8,26 +8,11 @@ import Tray from "gi://AstalTray";
 import Bluetooth from "gi://AstalBluetooth";
 import fetchUpdates from "../logic/updates";
 
-export default function Right() {
-  return (
-    <box className="Left" hexpand halign={Gtk.Align.END}>
-      <SysTray />
-      <UpdatesIcon />
-      <box className="LeftMenu">
-        <NetworkIcon />
-        <BluetoothIcon />
-        <BatteryIcon />
-      </box>
-      <AudioIcon />
-    </box>
-  );
-}
-
-function SysTray() {
+export function SysTray() {
   const tray = Tray.get_default();
 
   return (
-    <box>
+    <box className="SysTray">
       {bind(tray, "items").as((items) =>
         items.map((item) => {
           if (item.iconThemePath) App.add_icons(item.iconThemePath);
@@ -56,7 +41,27 @@ function SysTray() {
   );
 }
 
-function NetworkIcon() {
+export function UpdatesIcon() {
+  const updates: Variable<number> = Variable(-1).poll(100000, () =>
+    fetchUpdates()
+  );
+
+  return (
+    <box
+      className="UpdatesIcon"
+      onDestroy={() => {
+        updates.drop();
+      }}
+    >
+      {bind(updates).as((u) => {
+        if (u < 0) return "";
+        return ` ${u}`;
+      })}
+    </box>
+  );
+}
+
+export function NetworkIcon() {
   const { wifi } = Network.get_default();
 
   return (
@@ -70,67 +75,48 @@ function NetworkIcon() {
   );
 }
 
-function BluetoothIcon() {
+export function BluetoothIcon() {
   const bluetooth = Bluetooth.get_default();
 
   return (
-    <icon
-      className="Bluetooth"
-      icon="bluetooth-active-symbolic"
-      // for each connected device, show its name in the tooltip
-      tooltipText={bind(bluetooth, "devices").as((devices) =>
-        devices.map((d) => (d.connected ? d.name.concat("\n") : "")).join("")
-      )}
-    />
+    <button className="BluetoothIcon">
+      <icon
+        icon="bluetooth-active-symbolic"
+        // for each connected device, show its name in the tooltip
+        tooltipText={bind(bluetooth, "devices").as((devices) =>
+          devices.map((d) => (d.connected ? d.name.concat("\n") : "")).join("")
+        )}
+      />
+    </button>
   );
 }
 
-function AudioIcon() {
+export function AudioIcon() {
   const speaker = Wp.get_default()?.audio.defaultSpeaker!;
 
   return (
-    <box className="AudioSlider">
+    <button className="AudioIcon">
       <icon icon={bind(speaker, "volumeIcon")} />
       <label
         label={bind(speaker, "volume").as((v) =>
           Math.round(Number(v.toPrecision()) * 100).toString()
         )}
       />
-    </box>
+    </button>
   );
 }
 
-function BatteryIcon() {
+export function BatteryIcon() {
   const bat = Battery.get_default();
 
   return (
-    <box className="Battery" visible={bind(bat, "isPresent")}>
+    <button className="BatteryIcon" visible={bind(bat, "isPresent")}>
       <icon
         icon={bind(bat, "batteryIconName")}
         tooltipText={bind(bat, "batteryLevel").as((l) =>
           Math.round(Number(l.toPrecision()) * 100).toString()
         )}
       />
-    </box>
-  );
-}
-
-function UpdatesIcon() {
-  const updates: Variable<number> = Variable(-1).poll(100000, () =>
-    fetchUpdates()
-  );
-
-  return (
-    <box
-      className="Updates"
-      onDestroy={() => {
-        updates.drop();
-      }}
-    >
-      {bind(updates).as((u) => {
-        if (u < 0) return "";
-        return ` ${u}`;
-      })}
-    </box>
+    </button>
   );
 }
