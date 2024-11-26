@@ -29,12 +29,11 @@ function Workspaces({ hypr }: { hypr: Hyprland.Hyprland }) {
                 workspace === focused ? "focused" : ""
               )}
               onClick={(_, event) => {
-                console.log(event.button);
-                switch (event.button) {
-                  case 1:
-                    moveToWorkspaceSilent(id);
-                  case 3:
-                    defaultApp(id);
+                if (event.button === 1) {
+                  moveToWorkspaceSilent(id);
+                }
+                if (event.button === 3) {
+                  defaultApp(id);
                 }
               }}
             >

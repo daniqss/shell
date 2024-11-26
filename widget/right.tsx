@@ -5,14 +5,18 @@ import Battery from "gi://AstalBattery";
 import Wp from "gi://AstalWp";
 import Network from "gi://AstalNetwork";
 import Tray from "gi://AstalTray";
+import Bluetooth from "gi://AstalBluetooth";
 
 export default function Right() {
   return (
     <box className="Left" hexpand halign={Gtk.Align.END}>
       <SysTray />
-      <Wifi />
-      <AudioSlider />
-      <BatteryLevel />
+      <box className="LeftMenu">
+        <NetworkIcon />
+        <BluetoothIcon />
+        <BatteryIcon />
+      </box>
+      <AudioIcon />
     </box>
   );
 }
@@ -50,42 +54,61 @@ function SysTray() {
   );
 }
 
-function Wifi() {
+function NetworkIcon() {
   const { wifi } = Network.get_default();
 
   return (
+    <button className="NetworkIcon">
+      <icon
+        tooltipText={bind(wifi, "ssid").as(String)}
+        className="Wifi"
+        icon={bind(wifi, "iconName")}
+      />
+    </button>
+  );
+}
+
+function BluetoothIcon() {
+  const bluetooth = Bluetooth.get_default();
+
+  return (
     <icon
-      tooltipText={bind(wifi, "ssid").as(String)}
-      className="Wifi"
-      icon={bind(wifi, "iconName")}
+      className="Bluetooth"
+      icon="bluetooth-active-symbolic"
+      // for each connected device, show its name in the tooltip
+      tooltipText={bind(bluetooth, "devices").as((devices) =>
+        devices.map((d) => (d.connected ? d.name.concat("\n") : "")).join("")
+      )}
     />
   );
 }
 
-function AudioSlider() {
+function AudioIcon() {
   const speaker = Wp.get_default()?.audio.defaultSpeaker!;
 
   return (
     <box className="AudioSlider">
       <icon icon={bind(speaker, "volumeIcon")} />
-      {/* <label
-        label={bind(speaker, "volume").as(
-          (v) => `${Math.round(Number(v.toPrecision()) * 100)}`
+      <label
+        label={bind(speaker, "volume").as((v) =>
+          Math.round(Number(v.toPrecision()) * 100).toString()
         )}
-      /> */}
+      />
     </box>
   );
 }
 
-function BatteryLevel() {
+function BatteryIcon() {
   const bat = Battery.get_default();
 
   return (
     <box className="Battery" visible={bind(bat, "isPresent")}>
-      <icon icon={bind(bat, "batteryIconName")} />
-      {/* <label
-        label={bind(bat, "percentage").as((p) => `${Math.floor(p * 100)}`)}
-      /> */}
+      <icon
+        icon={bind(bat, "batteryIconName")}
+        tooltipText={bind(bat, "batteryLevel").as((level) =>
+          Math.round(Number(level.toPrecision()) * 100).toString()
+        )}
+      />
     </box>
   );
 }
