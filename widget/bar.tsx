@@ -39,11 +39,11 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
           <box className="Right" halign={Gtk.Align.END}>
             <SysTray />
             <UpdatesIcon />
-            <AudioIcon />
             <box className="SysMenu">
               <NetworkIcon />
               <BluetoothIcon />
               <BatteryIcon />
+              <AudioIcon />
             </box>
           </box>
         }

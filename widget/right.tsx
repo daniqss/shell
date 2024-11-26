@@ -65,13 +65,13 @@ export function NetworkIcon() {
   const { wifi } = Network.get_default();
 
   return (
-    <button className="NetworkIcon">
+    <box className="NetworkIcon">
       <icon
         tooltipText={bind(wifi, "ssid").as(String)}
         className="Wifi"
         icon={bind(wifi, "iconName")}
       />
-    </button>
+    </box>
   );
 }
 
@@ -79,7 +79,7 @@ export function BluetoothIcon() {
   const bluetooth = Bluetooth.get_default();
 
   return (
-    <button className="BluetoothIcon">
+    <box className="BluetoothIcon">
       <icon
         icon="bluetooth-active-symbolic"
         // for each connected device, show its name in the tooltip
@@ -87,7 +87,7 @@ export function BluetoothIcon() {
           devices.map((d) => (d.connected ? d.name.concat("\n") : "")).join("")
         )}
       />
-    </button>
+    </box>
   );
 }
 
@@ -95,14 +95,9 @@ export function AudioIcon() {
   const speaker = Wp.get_default()?.audio.defaultSpeaker!;
 
   return (
-    <button className="AudioIcon">
+    <box className="AudioIcon">
       <icon icon={bind(speaker, "volumeIcon")} />
-      <label
-        label={bind(speaker, "volume").as((v) =>
-          Math.round(Number(v.toPrecision()) * 100).toString()
-        )}
-      />
-    </button>
+    </box>
   );
 }
 
@@ -110,13 +105,13 @@ export function BatteryIcon() {
   const bat = Battery.get_default();
 
   return (
-    <button className="BatteryIcon" visible={bind(bat, "isPresent")}>
+    <box className="BatteryIcon" visible={bind(bat, "isPresent")}>
       <icon
         icon={bind(bat, "batteryIconName")}
         tooltipText={bind(bat, "batteryLevel").as((l) =>
           Math.round(Number(l.toPrecision()) * 100).toString()
         )}
       />
-    </button>
+    </box>
   );
 }
