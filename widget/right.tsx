@@ -1,5 +1,5 @@
 import { App, Gtk } from "astal/gtk3";
-import { bind } from "astal";
+import { bind, execAsync, Variable } from "astal";
 import { Gdk } from "astal/gtk3";
 import Battery from "gi://AstalBattery";
 import Wp from "gi://AstalWp";
@@ -11,6 +11,7 @@ export default function Right() {
   return (
     <box className="Left" hexpand halign={Gtk.Align.END}>
       <SysTray />
+      <UpdatesIcon />
       <box className="LeftMenu">
         <NetworkIcon />
         <BluetoothIcon />
@@ -105,10 +106,37 @@ function BatteryIcon() {
     <box className="Battery" visible={bind(bat, "isPresent")}>
       <icon
         icon={bind(bat, "batteryIconName")}
-        tooltipText={bind(bat, "batteryLevel").as((level) =>
-          Math.round(Number(level.toPrecision()) * 100).toString()
+        tooltipText={bind(bat, "batteryLevel").as((l) =>
+          Math.round(Number(l.toPrecision()) * 100).toString()
         )}
       />
+    </box>
+  );
+}
+
+function UpdatesIcon() {
+  async function fetchUpdates(): Promise<number> {
+    console.log("fetching updates");
+    return execAsync("checkupdates")
+      .then((stdout) => stdout.trim().split("\n").length)
+      .catch(() => 0);
+  }
+
+  const updates: Variable<number> = Variable(-1).poll(100000, () =>
+    fetchUpdates()
+  );
+
+  return (
+    <box
+      className="Updates"
+      onDestroy={() => {
+        updates.drop();
+      }}
+    >
+      {bind(updates).as((u) => {
+        if (u < 0) return "";
+        return ` ${u}`;
+      })}
     </box>
   );
 }
