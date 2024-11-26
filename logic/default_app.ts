@@ -1,5 +1,4 @@
 import { execAsync } from "astal";
-import Process from "gi://AstalIO";
 
 export default function defaultApp(id: number) {
   const apps: { [key: number]: string } = {

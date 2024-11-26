@@ -1,7 +1,7 @@
 import { bind } from "astal";
 import { Gtk } from "astal/gtk3";
 import Hyprland from "gi://AstalHyprland";
-import defaultApp from "../logic/default-app";
+import defaultApp from "../logic/default_app";
 import { moveToWorkspaceSilent } from "../logic/workspace";
 
 export default function Left() {

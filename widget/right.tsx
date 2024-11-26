@@ -6,6 +6,7 @@ import Wp from "gi://AstalWp";
 import Network from "gi://AstalNetwork";
 import Tray from "gi://AstalTray";
 import Bluetooth from "gi://AstalBluetooth";
+import fetchUpdates from "../logic/updates";
 
 export default function Right() {
   return (
@@ -115,13 +116,6 @@ function BatteryIcon() {
 }
 
 function UpdatesIcon() {
-  async function fetchUpdates(): Promise<number> {
-    console.log("fetching updates");
-    return execAsync("checkupdates")
-      .then((stdout) => stdout.trim().split("\n").length)
-      .catch(() => 0);
-  }
-
   const updates: Variable<number> = Variable(-1).poll(100000, () =>
     fetchUpdates()
   );
