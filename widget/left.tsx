@@ -7,7 +7,7 @@ export function Workspaces() {
   const hypr = Hyprland.get_default();
 
   return (
-    <box className="Workspaces">
+    <box className="Workspaces" vexpand={false} visible={true}>
       {bind(hypr, "workspaces").as((wss) => {
         const workspaces = Array.from({ length: 9 }, (_, i) => i + 1);
         return workspaces.map((id) => {
@@ -16,7 +16,9 @@ export function Workspaces() {
           return (
             <button
               className={bind(hypr, "focusedWorkspace").as((focused) =>
-                workspace === focused ? "focused" : ""
+                workspace === focused
+                  ? "focusedWorkspace Workspace"
+                  : "Workspace"
               )}
               onClick={(_, event) => {
                 if (event.button === 1) {
@@ -26,9 +28,7 @@ export function Workspaces() {
                   defaultApp(id);
                 }
               }}
-            >
-              {id}
-            </button>
+            />
           );
         });
       })}
@@ -41,7 +41,7 @@ export function FocusedClient() {
   const focused = bind(hypr, "focusedClient");
 
   return (
-    <box className="Focused" visible={focused.as(Boolean)}>
+    <box className="FocusedClient" visible={focused.as(Boolean)}>
       {focused.as(
         (client) => client && <label label={bind(client, "class").as(String)} />
       )}

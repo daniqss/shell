@@ -33,15 +33,48 @@ window.Bar {
       border-radius: $radius;
     }
 
+    // workspaces style copied from https://github.com/AndreasHGK/mithril-shell/,
+    // an amazing hyprland shell based on Gnome's
+    // thanks <3!!!
     .Workspaces {
-      margin: 0 2px 0 2px;
-      padding: 2px;
-      .focused label {
+      padding-top: 1.1em;
+      padding-bottom: 1.1em;
+      padding-left: 0.5em;
+      padding-right: 0.5em;
+
+      background-color: $bg;
+
+      > * + * {
+        margin-left: 0.5em;
+      }
+
+      .Workspace {
+        border-radius: 9999px;
+
+        transition-property: min-width, background-color;
+        transition-timing-function: cubic-bezier(0.13, 0.99, 0.29, 1);
+        transition-duration: 200ms;
+
+        min-height: 0.6em;
+        min-width: 0.6em;
+
+        margin-bottom: -0.2em;
+        margin-top: -0.2em;
+
+        background-color: mix($bg, $fg, 50%);
+      }
+      .focusedWorkspace {
+        min-height: 0.4em;
+        min-width: 1.8em;
+
+        margin-bottom: -0.4em;
+        margin-top: -0.4em;
+
         background-color: $fg;
-        color: $bg;
       }
     }
-    .Focused {
+
+    .FocusedClient {
       color: $accent;
     }
   }
@@ -72,10 +105,13 @@ window.Bar {
       border-radius: $radius * 3;
       padding: 0 0.4em 0 0.4em;
       margin: 0.3em 0.4em 0.3em 0.4em;
-      background-color: color.adjust($bg, $lightness: 5%);
+      background-color: $bg;
+
+      &:hover {
+        background-color: color.adjust($bg, $lightness: 5%);
+      }
 
       & * {
-        all: unset;
         padding: 0.2em 0.1em 0.2em 0.1em;
       }
     }
