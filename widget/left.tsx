@@ -17,7 +17,9 @@ export function Workspaces() {
             <button
               className={bind(hypr, "focusedWorkspace").as((focused) =>
                 workspace === focused
-                  ? "focusedWorkspace Workspace"
+                  ? "FocusedWorkspace Workspace"
+                  : workspace && workspace.get_clients().length > 0
+                  ? "Workspace ActiveWorkspace"
                   : "Workspace"
               )}
               onClick={(_, event) => {

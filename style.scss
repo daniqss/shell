@@ -63,7 +63,7 @@ window.Bar {
 
         background-color: mix($bg, $fg, 50%);
       }
-      .focusedWorkspace {
+      .FocusedWorkspace {
         min-height: 0.4em;
         min-width: 1.8em;
 
@@ -71,6 +71,9 @@ window.Bar {
         margin-top: -0.4em;
 
         background-color: $fg;
+      }
+      .ActiveWorkspace {
+        background-color: $accent;
       }
     }
 
@@ -104,7 +107,7 @@ window.Bar {
     .SysMenu {
       border-radius: $radius * 3;
       padding: 0 0.4em 0 0.4em;
-      margin: 0.3em 0.4em 0.3em 0.4em;
+      margin: 0.2em 0.4em 0.2em 0.4em;
       background-color: $bg;
 
       &:hover {
