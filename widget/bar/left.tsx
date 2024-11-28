@@ -1,7 +1,7 @@
 import { bind } from "astal";
 import Hyprland from "gi://AstalHyprland";
-import defaultApp from "../../logic/default_app";
-import { moveToWorkspaceSilent } from "../../logic/workspace";
+import defaultApp from "../../service/default_app";
+import { moveToWorkspaceSilent } from "../../service/workspace";
 
 export function Workspaces() {
   const hypr = Hyprland.get_default();

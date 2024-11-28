@@ -6,7 +6,7 @@ import Wp from "gi://AstalWp";
 import Network from "gi://AstalNetwork";
 import Tray from "gi://AstalTray";
 import Bluetooth from "gi://AstalBluetooth";
-import fetchUpdates from "../../logic/updates";
+import fetchUpdates from "../../service/updates";
 
 export function SysTray() {
   const tray = Tray.get_default();
