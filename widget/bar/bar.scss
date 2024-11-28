@@ -1,9 +1,5 @@
 @use "sass:color";
-
-$bg: #0c0c0c;
-$fg: #f5e0dc;
-$accent: #f5e0dc;
-$radius: 7px;
+@use "../../theme.scss" as *;
 
 window.Bar {
   font-family: "Firacode Nerd Font";
