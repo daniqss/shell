@@ -3,7 +3,7 @@ WIP shell made with [astal](https://aylur.github.io/astal/) and [ags](https://ay
 
 ## features
 - [x] bar
-- [ ] better workspaces widget
+- [x] better workspaces widget
 - [ ] launcher
 - [ ] taskbar
 - [ ] clipboard, network, volume, brightness...
