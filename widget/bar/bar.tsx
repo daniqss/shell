@@ -37,7 +37,6 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
         endWidget={
           <box className="Right" halign={Gtk.Align.END}>
             <SysTray />
-            <UpdatesIcon />
             <eventbox className="SysMenu">
               <box>
                 <NetworkIcon />
@@ -243,7 +242,7 @@ export function BatteryIcon() {
   );
 }
 
-export function Clock({ format = "%d-%m-%y %H:%M" }) {
+export function Clock({ format = "%H:%M" }) {
   const time = Variable<string>("").poll(
     1000,
     () => GLib.DateTime.new_now_local().format(format)!
