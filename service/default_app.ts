@@ -9,8 +9,11 @@ export default function defaultApp(id: number) {
     5: "nautilus",
     6: "vesktop",
     7: "steam",
-    8: "spotify",
-    9: "google-chrome",
+    8: "spotify-launcher",
+    9: "google-chrome-stable",
   };
-  execAsync(apps[id]);
+  console.log(`executing ${id} ${apps[id]}`);
+  execAsync(apps[id])
+    .then((res) => console.log(res))
+    .catch((err) => console.error(err));
 }

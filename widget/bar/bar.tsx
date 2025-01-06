@@ -43,8 +43,8 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
               <box>
                 <NetworkIcon />
                 <BluetoothIcon />
-                <BatteryIcon />
                 <AudioIcon />
+                <BatteryIcon />
               </box>
             </eventbox>
           </box>

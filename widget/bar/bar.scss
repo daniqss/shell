@@ -30,14 +30,20 @@ window.Bar {
     }
 
     // workspaces style copied from https://github.com/AndreasHGK/mithril-shell/,
-    // an amazing hyprland shell based on Gnome's
+    // an amazing hyprland shell based on Gnome shell style
     // thanks <3!!!
     .WorkspacesContainer {
       box {
         border-radius: $radius * 3;
         padding: 0 0em 0 0em;
         margin: 0 0em 0 0.2em;
-        background-color: color.adjust($bg, $lightness: 5%);
+        background-color: $bg;
+        transition: background-color 0.16s ease;
+      }
+      &:hover {
+        box {
+          background-color: color.adjust($bg, $lightness: 5%);
+        }
       }
 
       // & * {
@@ -67,7 +73,7 @@ window.Bar {
           margin-bottom: -0.2em;
           margin-top: -0.2em;
 
-          background-color: mix($bg, $fg, 50%);
+          background-color: color.mix($bg, $fg, 50%);
         }
         .FocusedWorkspace {
           min-height: 0.4em;
@@ -114,9 +120,15 @@ window.Bar {
     .SysMenu {
       box {
         border-radius: $radius * 3;
-        background-color: color.adjust($bg, $lightness: 5%);
+        background-color: $bg;
         padding: 0.2em 0.2em 0.2em 0.2em;
         margin: 0 0em 0 0.2em;
+        transition: background-color 0.16s ease;
+      }
+      &:hover {
+        box {
+          background-color: color.adjust($bg, $lightness: 5%);
+        }
       }
       & * {
         padding: 0.2em 0.1em 0.2em 0.1em;
