@@ -106,11 +106,9 @@ export function BatteryIcon() {
 
   return (
     <box className="BatteryIcon" visible={bind(bat, "isPresent")}>
-      <icon
-        icon={bind(bat, "batteryIconName")}
-        tooltipText={bind(bat, "batteryLevel").as((l) =>
-          Math.round(Number(l.toPrecision()) * 100).toString()
-        )}
+      <icon icon={bind(bat, "batteryIconName")} />
+      <label
+        label={bind(bat, "percentage").as((p) => `${Math.floor(p * 100)}%`)}
       />
     </box>
   );
