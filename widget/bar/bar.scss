@@ -2,7 +2,7 @@
 @use "../../theme.scss" as *;
 
 window.Bar {
-  font-family: "Firacode Nerd Font";
+  font-family: $font;
   border: none;
   box-shadow: none;
   background-color: $bg;
@@ -38,7 +38,7 @@ window.Bar {
         padding: 0 0em 0 0em;
         margin: 0 0em 0 0.2em;
         background-color: $bg;
-        transition: background-color 0.16s ease;
+        transition: background-color 0.22s ease;
       }
       &:hover {
         box {
@@ -114,6 +114,7 @@ window.Bar {
     }
 
     .UpdatesIcon {
+      font-family: "Firacode Nerd Font";
       margin: 0 0.4em 0 0.4em;
     }
 
@@ -123,7 +124,7 @@ window.Bar {
         background-color: $bg;
         padding: 0.2em 0.2em 0.2em 0.2em;
         margin: 0 0em 0 0.2em;
-        transition: background-color 0.16s ease;
+        transition: background-color 0.22s ease;
       }
       &:hover {
         box {
