@@ -26,6 +26,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
       <centerbox
         startWidget={
           <box className="Left" hexpand halign={Gtk.Align.START}>
+            <LauncherIcon />
             <Workspaces />
           </box>
         }
@@ -54,6 +55,17 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
 }
 
 // left
+export function LauncherIcon(): Gtk.Widget {
+  return (
+    <button onClick={() => console.log("TODO: show app launcher")}>
+      <icon
+        icon={GLib.get_os_info("LOGO") ?? "go-home-symbolic"}
+        className="LauncherIcon"
+      />
+    </button>
+  );
+}
+
 // workspaces widget
 export function Workspaces(): Gtk.Widget {
   const hypr = Hyprland.get_default();
@@ -137,36 +149,25 @@ export function FocusedClient(): Gtk.Widget {
 
 // right
 export function SysTray() {
-  const tray = Tray.get_default();
+  // const tray = Tray.get_default();
 
-  return (
-    <box className="SysTray">
-      {bind(tray, "items").as((items) =>
-        items.map((item) => {
-          if (item.iconThemePath) App.add_icons(item.iconThemePath);
-
-          const menu = item.create_menu();
-
-          return (
-            <button
-              tooltipMarkup={bind(item, "tooltipMarkup")}
-              onDestroy={() => menu?.destroy()}
-              onClickRelease={(self) => {
-                menu?.popup_at_widget(
-                  self,
-                  Gdk.Gravity.SOUTH,
-                  Gdk.Gravity.NORTH,
-                  null
-                );
-              }}
-            >
-              <icon gIcon={bind(item, "gicon")} />
-            </button>
-          );
-        })
-      )}
-    </box>
-  );
+  // return (
+  //   <box className="SysTray">
+  //     {bind(tray, "items").as((items) =>
+  //       items.map((item) => (
+  //         <menubutton
+  //           tooltipMarkup={bind(item, "tooltipMarkup")}
+  //           usePopover={false}
+  //           actionGroup={bind(item, "actionGroup").as((ag) => ["dbusmenu", ag])}
+  //           menuModel={bind(item, "menuModel")}
+  //         >
+  //           <icon gicon={bind(item, "gicon")} />
+  //         </menubutton>
+  //       ))
+  //     )}
+  //   </box>
+  // );
+  return <box />;
 }
 
 export function UpdatesIcon() {
@@ -175,12 +176,7 @@ export function UpdatesIcon() {
   );
 
   return (
-    <box
-      className="UpdatesIcon"
-      onDestroy={() => {
-        updates.drop();
-      }}
-    >
+    <box className="UpdatesIcon" onDestroy={() => updates.drop()}>
       {bind(updates).as((u) => {
         if (u < 0) return "";
         return ` ${u}`;

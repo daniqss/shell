@@ -29,6 +29,11 @@ window.Bar {
       border-radius: $radius;
     }
 
+    .LauncherIcon {
+      font-size: 1.5em;
+      padding-right: 0.3em;
+    }
+
     // workspaces style copied from https://github.com/AndreasHGK/mithril-shell/,
     // an amazing hyprland shell based on Gnome shell style
     // thanks <3!!!
