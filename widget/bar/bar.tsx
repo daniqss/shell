@@ -148,26 +148,28 @@ export function FocusedClient(): Gtk.Widget {
 }
 
 // right
-export function SysTray() {
-  // const tray = Tray.get_default();
+export function SysTray(): Gtk.Widget {
+  const tray = Tray.get_default();
 
-  // return (
-  //   <box className="SysTray">
-  //     {bind(tray, "items").as((items) =>
-  //       items.map((item) => (
-  //         <menubutton
-  //           tooltipMarkup={bind(item, "tooltipMarkup")}
-  //           usePopover={false}
-  //           actionGroup={bind(item, "actionGroup").as((ag) => ["dbusmenu", ag])}
-  //           menuModel={bind(item, "menuModel")}
-  //         >
-  //           <icon gicon={bind(item, "gicon")} />
-  //         </menubutton>
-  //       ))
-  //     )}
-  //   </box>
-  // );
-  return <box />;
+  return (
+    <box className="SysTray">
+      {bind(tray, "items").as((items) =>
+        items
+          .filter((item) => item.iconName !== "spotify-linux-32")
+          .map(
+            (item) => <icon icon={item.iconName} />
+            // <menubutton
+            //   tooltipMarkup={bind(item, "tooltipMarkup")}
+            //   usePopover={false}
+            //   actionGroup={bind(item, "actionGroup").as((ag) => ["dbusmenu", ag])}
+            //   menuModel={bind(item, "menuModel")}
+            // >
+            //   <icon gicon={bind(item, "gicon")} />
+            // </menubutton>
+          )
+      )}
+    </box>
+  );
 }
 
 export function UpdatesIcon() {
