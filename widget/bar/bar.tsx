@@ -157,7 +157,9 @@ export function SysTray(): Gtk.Widget {
         items
           .filter((item) => item.iconName !== "spotify-linux-32")
           .map(
-            (item) => <icon icon={item.iconName} />
+            (item) => <button>
+              <icon icon={item.iconName} />
+            </button>
             // <menubutton
             //   tooltipMarkup={bind(item, "tooltipMarkup")}
             //   usePopover={false}
