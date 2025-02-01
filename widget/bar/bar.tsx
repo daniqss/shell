@@ -77,47 +77,29 @@ export function Workspaces(): Gtk.Widget {
     }
   }
 
-  // generate workspace buttons
-  function bindWorkspaces(wss: Hyprland.Workspace[]): Gtk.Widget[] {
-    const workspaces = Array.from({ length: 9 }, (_, i) => i + 1);
+  // determine workspace class depending on if it's active, focused or empty
+  function bindWorkspaceClass(
+    workspace: Hyprland.Workspace | undefined,
+    focused: Hyprland.Workspace
+  ): string {
+    return workspace === focused
+      ? "FocusedWorkspace Workspace"
+      : workspace && workspace.get_clients().length > 0
+      ? "Workspace ActiveWorkspace"
+      : "Workspace";
+  }
+  const workspaces = Array.from({ length: 9 }, (_, i) => i + 1);
 
-    // determine workspace class depending on if it's active, focused or empty
-    function bindWorkspaceClass(
-      workspace: Hyprland.Workspace | undefined,
-      focused: Hyprland.Workspace
-    ): string {
-      return workspace === focused
-        ? "FocusedWorkspace Workspace"
-        : workspace && workspace.get_clients().length > 0
-        ? "Workspace ActiveWorkspace"
-        : "Workspace";
+  // executed when workspace is clicked
+  function onWorkspaceClick(id: number, event: Astal.ClickEvent) {
+    // left click
+    if (event.button === 1) {
+      moveToWorkspaceSilent(id);
     }
-
-    // executed when workspace is clicked
-    function onWorkspaceClick(id: number, event: Astal.ClickEvent) {
-      // left click
-      if (event.button === 1) {
-        moveToWorkspaceSilent(id);
-      }
-      // right click
-      else if (event.button === 3) {
-        defaultApp(id);
-      }
+    // right click
+    else if (event.button === 3) {
+      defaultApp(id);
     }
-
-    return workspaces.map((id) => {
-      const workspace = wss.find((ws) => ws.id === id);
-
-      return (
-        <button
-          vexpand={false}
-          className={bind(hypr, "focusedWorkspace").as((focused) =>
-            bindWorkspaceClass(workspace, focused)
-          )}
-          onClick={(_, event) => onWorkspaceClick(id, event)}
-        />
-      );
-    });
   }
 
   return (
@@ -126,7 +108,21 @@ export function Workspaces(): Gtk.Widget {
       className="WorkspacesContainer"
     >
       <box className="Workspaces" vexpand={false} visible={true}>
-        {bind(hypr, "workspaces").as((wss) => bindWorkspaces(wss))}
+        {bind(hypr, "workspaces").as((wss) =>
+          workspaces.map((id) => {
+            const workspace = wss.find((ws) => ws.id === id);
+
+            return (
+              <button
+                vexpand={false}
+                className={bind(hypr, "focusedWorkspace").as((focused) =>
+                  bindWorkspaceClass(workspace, focused)
+                )}
+                onClick={(_, event) => onWorkspaceClick(id, event)}
+              />
+            );
+          })
+        )}
       </box>
     </eventbox>
   );
@@ -157,9 +153,11 @@ export function SysTray(): Gtk.Widget {
         items
           .filter((item) => item.iconName !== "spotify-linux-32")
           .map(
-            (item) => <button>
-              <icon icon={item.iconName} />
-            </button>
+            (item) => (
+              <button>
+                <icon icon={item.iconName} />
+              </button>
+            )
             // <menubutton
             //   tooltipMarkup={bind(item, "tooltipMarkup")}
             //   usePopover={false}
@@ -190,15 +188,21 @@ export function UpdatesIcon() {
 }
 
 export function NetworkIcon() {
-  const { wifi } = Network.get_default();
+  const network = Network.get_default();
+  const wifi = bind(network, "wifi");
 
   return (
-    <box className="NetworkIcon">
-      <icon
-        tooltipText={bind(wifi, "ssid").as(String)}
-        className="Wifi"
-        icon={bind(wifi, "iconName")}
-      />
+    <box visible={wifi.as(Boolean)}>
+      {wifi.as(
+        (wifi) =>
+          wifi && (
+            <icon
+              tooltipText={bind(wifi, "ssid").as(String)}
+              className="Wifi"
+              icon={bind(wifi, "iconName")}
+            />
+          )
+      )}
     </box>
   );
 }
@@ -209,7 +213,15 @@ export function BluetoothIcon() {
   return (
     <box className="BluetoothIcon">
       <icon
-        icon="bluetooth-active-symbolic"
+        // active only if its at least one connected device
+        icon={bind(bluetooth, "devices").as(
+          (devices) =>
+            `bluetooth-${
+              devices.filter((d) => d.connected).length > 0
+                ? "active"
+                : "disabled"
+            }-symbolic`
+        )}
         // for each connected device, show its name in the tooltip
         tooltipText={bind(bluetooth, "devices").as((devices) =>
           devices.map((d) => (d.connected ? d.name.concat("\n") : "")).join("")
