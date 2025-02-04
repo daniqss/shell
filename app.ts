@@ -1,14 +1,16 @@
 import { App } from "astal/gtk3";
 import style from "./app.scss";
 import Bar from "./widget/bar/bar";
-import Applauncher from "./widget/applauncher/applauncher";
+// import Applauncher from "./widget/applauncher/applauncher";
+import OSD from "./widget/osd/osd";
 import defaultApp from "./service/default_app";
 
 App.start({
   css: style,
   main: () => {
     App.get_monitors().map(Bar);
-    Applauncher();
+    App.get_monitors().map(OSD);
+    // Applauncher();
   },
   requestHandler(request: string, res: (response: any) => void) {
     if (request == "defaultApp") {
