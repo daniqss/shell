@@ -4,6 +4,7 @@ WIP shell made with [astal](https://aylur.github.io/astal/) and [ags](https://ay
 ## features
 - [x] bar
 - [x] better workspaces widget
+- [x] osd
 - [ ] launcher
 - [ ] taskbar
 - [ ] clipboard, network, volume, brightness...
@@ -24,3 +25,8 @@ ags run .
 
 ## screenshots
 ![](./assets/image.png)
+
+## thanks to
+- [aylur](https://github.com/aylur/) for the amazing [astal](https://aylur.github.io/astal/) library
+- [PoSayDone](https://github.com/PoSayDone/) for the the beautiful configurations
+- [AndreasHGK](https://github.com/AndreasHGK/) for the workspaces widget styles
