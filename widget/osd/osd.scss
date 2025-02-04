@@ -1,30 +1,30 @@
-@use "sass:color";
 @use "../../theme.scss" as *;
+@use "sass:color";
 
-window.OSD {
-  box.OSD {
-    border-radius: 100px;
-    background-color: $bg;
-    padding: 13px 16px;
-    margin: 13px;
-    box-shadow: 3px 3px 7px 0px rgba(0, 0, 0, 0.4);
-  }
-
+.OSD,
+.osd {
+  background: transparent;
   icon {
-    font-size: 4rem;
+    font-size: 16px;
+    margin-left: 16px;
   }
+}
 
-  label {
-    font-size: 2.4rem;
-  }
+.indicator .progress {
+  padding: 0px;
 
-  levelbar {
-    trough {
-      margin: 1 0.6rem;
-    }
-
-    block {
-      min-height: 2rem;
+  border-radius: 100px;
+  margin-bottom: 20px;
+  background-color: color.adjust($bg, $alpha: -0.2);
+  .fill {
+    transition: background-color 3s ease-in-out;
+    border-radius: 100px;
+    background-color: $accent;
+    color: #caa6f7;
+    transition: min-width 0.1s;
+    &.muted {
+      background-color: $bg;
+      color: $fg;
     }
   }
 }

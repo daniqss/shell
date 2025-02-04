@@ -1,73 +1,85 @@
-import { App, Astal, Gdk, Gtk } from "astal/gtk3";
+import { App, Astal, Gdk, Gtk, Widget } from "astal/gtk3";
+import { bind } from "astal";
 import { timeout } from "astal/time";
 import Variable from "astal/variable";
-import Brightness from "./brightness";
+import Brightness from "../../service/Brightness";
+import Progress from "./progress";
 import Wp from "gi://AstalWp";
 
-function OnScreenProgress({ visible }: { visible: Variable<boolean> }) {
-  const brightness = Brightness.get_default();
-  const speaker = Wp.get_default()!.get_default_speaker();
+const DELAY = 1000;
 
-  const iconName = Variable("");
-  const value = Variable(0);
+function OnScreenProgress(window: Astal.Window, vertical: boolean) {
+  const speaker = Wp.get_default()?.audio.defaultSpeaker!;
+
+  const indicator = new Widget.Icon({
+    pixelSize: 20,
+    valign: Gtk.Align.CENTER,
+    icon: bind(speaker, "volumeIcon"),
+  });
+
+  const progress = Progress({
+    vertical,
+    width: vertical ? 48 : 400,
+    height: vertical ? 400 : 48,
+    child: indicator,
+  });
 
   let count = 0;
-  function show(v: number, icon: string) {
-    visible.set(true);
-    value.set(v);
-    iconName.set(icon);
+
+  function show(value: number, icon: string, muted: boolean) {
+    window.visible = true;
+    indicator.icon = icon;
+    progress.setValue(value, muted);
     count++;
-    timeout(2000, () => {
+    timeout(DELAY, () => {
       count--;
-      if (count === 0) visible.set(false);
+      if (count === 0) window.visible = false;
     });
   }
 
   return (
-    <revealer
-      setup={(self) => {
-        self.hook(brightness, "notify::screen", () =>
-          show(brightness.screen, "display-brightness-symbolic")
-        );
+    <box
+      className="indicator"
+      halign={Gtk.Align.CENTER}
+      valign={Gtk.Align.END}
+      css="min-height: 2px;"
+      child={progress}
+      setup={() => {
+        progress.hook(speaker, "notify::mute", () => {
+          progress.setMute(speaker.mute);
+        });
+        progress.hook(speaker, "notify::volume", () => {
+          return show(speaker.volume, speaker.volumeIcon, speaker.mute);
+        });
 
-        if (speaker) {
-          self.hook(speaker, "notify::volume", () =>
-            show(speaker.volume, speaker.volumeIcon)
+        if (Brightness) {
+          progress.hook(Brightness, () =>
+            show(Brightness!.screen, "display-brightness-symbolic", false)
           );
         }
       }}
-      revealChild={visible()}
-      transitionType={Gtk.RevealerTransitionType.SLIDE_UP}
-    >
-      <box className="OSD">
-        <icon icon={iconName()} />
-        <levelbar
-          valign={Gtk.Align.CENTER}
-          widthRequest={100}
-          value={value()}
-        />
-        <label label={value((v) => `${Math.floor(v * 100)}%`)} />
-      </box>
-    </revealer>
+    ></box>
   );
 }
 
 export default function OSD(monitor: Gdk.Monitor) {
-  const visible = Variable(false);
+  // const visible = Variable(false);
 
   return (
     <window
-      gdkmonitor={monitor}
+      visible={false}
       className="OSD"
       namespace="osd"
-      application={App}
+      gdkmonitor={monitor}
       layer={Astal.Layer.OVERLAY}
-      keymode={Astal.Keymode.ON_DEMAND}
       anchor={Astal.WindowAnchor.BOTTOM}
-    >
-      <eventbox onClick={() => visible.set(false)}>
-        <OnScreenProgress visible={visible} />
-      </eventbox>
-    </window>
+      setup={(self) => {
+        self.add(
+          <box className="osd" vertical={true}>
+            {OnScreenProgress(self, false)}
+          </box>
+        );
+      }}
+    ></window>
   );
 }
