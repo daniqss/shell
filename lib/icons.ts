@@ -14,4 +14,5 @@ export function lookupIcon(iconName: string, size = 24): Gtk.IconInfo | null {
 export const iconSustitutions: sustitutions = {
   "code-url-handler": "visual-studio-code",
   code: "visual-studio-code",
+  spotify: "spotify-launcher",
 };
