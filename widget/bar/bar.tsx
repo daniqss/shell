@@ -5,10 +5,11 @@ import Wp from "gi://AstalWp";
 import Network from "gi://AstalNetwork";
 import Tray from "gi://AstalTray";
 import Bluetooth from "gi://AstalBluetooth";
-import fetchUpdates from "../../service/updates";
+import fetchUpdates from "../../lib/updates";
 import Hyprland from "gi://AstalHyprland";
-import defaultApp from "../../service/default_app";
-import { moveToWorkspaceSilent } from "../../service/workspace";
+import defaultApp from "../../lib/default_app";
+import { moveToWorkspaceSilent } from "../../lib/workspace";
+import { iconFallback, lookupIcon, iconSustitutions } from "../../lib/icons";
 
 export default function Bar(gdkmonitor: Gdk.Monitor) {
   return (
@@ -128,18 +129,42 @@ export function Workspaces(): Gtk.Widget {
   );
 }
 
-// center
-// focused client widget
 export function FocusedClient(): Gtk.Widget {
   const hypr = Hyprland.get_default();
   const focused = bind(hypr, "focusedClient");
 
   return (
-    <box className="FocusedClient" visible={focused.as(Boolean)}>
-      {focused.as(
-        (client) => client && <label label={bind(client, "class").as(String)} />
-      )}
-    </box>
+    <revealer
+      transitionType={Gtk.RevealerTransitionType.CROSSFADE}
+      transitionDuration={300}
+      revealChild={focused.as(Boolean)}
+    >
+      <box className="FocusedClient" visible={focused.as(Boolean)}>
+        <box spacing={8}>
+          <icon
+            className="AppIcon"
+            icon={focused.as((focused) => {
+              // return fallback if no focused client is undefined
+              if (!focused) return iconFallback;
+
+              // return icon if it exists, otherwise return fallback
+              const iconName = focused.class;
+              return (
+                iconSustitutions[iconName] ??
+                (lookupIcon(iconName) ? iconName : iconFallback)
+              );
+            })}
+          />
+          <label
+            label={focused.as((focused) => {
+              return focused.title ?? "unknown";
+            })}
+            truncate={true}
+            maxWidthChars={32}
+          />
+        </box>
+      </box>
+    </revealer>
   );
 }
 

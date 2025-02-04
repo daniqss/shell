@@ -3,7 +3,7 @@ import style from "./app.scss";
 import Bar from "./widget/bar/bar";
 // import Applauncher from "./widget/applauncher/applauncher";
 import OSD from "./widget/osd/osd";
-import defaultApp from "./service/default_app";
+import defaultApp from "./lib/default_app";
 
 App.start({
   css: style,

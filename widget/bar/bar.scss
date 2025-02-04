@@ -28,81 +28,81 @@ window.Bar {
       margin: 2px;
       border-radius: $radius;
     }
+  }
 
-    .LauncherIcon {
-      font-size: 1.5em;
-      padding-right: 0.3em;
+  .LauncherIcon {
+    font-size: 1.5em;
+    padding-right: 0.3em;
+  }
+
+  // workspaces style copied from https://github.com/AndreasHGK/mithril-shell/,
+  // an amazing hyprland shell based on Gnome shell style
+  // thanks <3!!!
+  .WorkspacesContainer {
+    box {
+      border-radius: $radius * 3;
+      padding: 0 0em 0 0em;
+      margin: 0 0em 0 0.2em;
+      background-color: $bg;
+      transition: background-color 0.22s ease;
     }
-
-    // workspaces style copied from https://github.com/AndreasHGK/mithril-shell/,
-    // an amazing hyprland shell based on Gnome shell style
-    // thanks <3!!!
-    .WorkspacesContainer {
+    &:hover {
       box {
-        border-radius: $radius * 3;
-        padding: 0 0em 0 0em;
-        margin: 0 0em 0 0.2em;
-        background-color: $bg;
-        transition: background-color 0.22s ease;
+        background-color: color.adjust($bg, $lightness: 5%);
       }
-      &:hover {
-        box {
-          background-color: color.adjust($bg, $lightness: 5%);
-        }
+    }
+    .Workspaces {
+      padding-top: 1.1em;
+      padding-bottom: 1.1em;
+      padding-left: 0.5em;
+      padding-right: 0.5em;
+
+      > * + * {
+        margin-left: 0.5em;
       }
+      .Workspace {
+        border-radius: 9999px;
 
-      // & * {
-      //   padding: 0.2em 0.1em 0.2em 0.1em;
-      // }
+        transition-property: min-width, background-color;
+        transition-timing-function: cubic-bezier(0.13, 0.99, 0.29, 1);
+        transition-duration: 200ms;
 
-      .Workspaces {
-        padding-top: 1.1em;
-        padding-bottom: 1.1em;
-        padding-left: 0.5em;
-        padding-right: 0.5em;
+        min-height: 0.6em;
+        min-width: 0.6em;
 
-        > * + * {
-          margin-left: 0.5em;
-        }
+        margin-bottom: -0.2em;
+        margin-top: -0.2em;
 
-        .Workspace {
-          border-radius: 9999px;
-
-          transition-property: min-width, background-color;
-          transition-timing-function: cubic-bezier(0.13, 0.99, 0.29, 1);
-          transition-duration: 200ms;
-
-          min-height: 0.6em;
-          min-width: 0.6em;
-
-          margin-bottom: -0.2em;
-          margin-top: -0.2em;
-
-          background-color: color.mix($bg, $fg, 50%);
-        }
-        .FocusedWorkspace {
-          min-height: 0.4em;
-          min-width: 1.8em;
-
-          margin-bottom: -0.4em;
-          margin-top: -0.4em;
-
-          background-color: $fg;
-        }
-        .ActiveWorkspace {
-          background-color: $accent;
-        }
+        background-color: color.mix($bg, $fg, 50%);
       }
 
-      .FocusedClient {
-        color: $accent;
+      .FocusedWorkspace {
+        min-height: 0.4em;
+        min-width: 1.8em;
+
+        margin-bottom: -0.4em;
+        margin-top: -0.4em;
+
+        background-color: $fg;
+      }
+
+      .ActiveWorkspace {
+        background-color: $accent;
       }
     }
   }
 
+  .FocusedClient {
+    color: $accent;
+  }
+
+  .AppIcon {
+    font-size: 1.4rem;
+  }
+
   .Right {
     all: unset;
-    margin: 0.3em 0.5em 0.3em 0;
+    margin: 0.3em 0.5em 0.3em 0px;
 
     .SysTray {
       button {
@@ -120,7 +120,7 @@ window.Bar {
 
     .UpdatesIcon {
       font-family: "Firacode Nerd Font";
-      margin: 0 0.4em 0 0.4em;
+      margin: 0px 0.4em 0px 0.4em;
     }
 
     .SysMenu {
