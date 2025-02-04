@@ -150,23 +150,16 @@ export function SysTray(): Gtk.Widget {
   return (
     <box className="SysTray">
       {bind(tray, "items").as((items) =>
-        items
-          .filter((item) => item.iconName !== "spotify-linux-32")
-          .map(
-            (item) => (
-              <button>
-                <icon icon={item.iconName} />
-              </button>
-            )
-            // <menubutton
-            //   tooltipMarkup={bind(item, "tooltipMarkup")}
-            //   usePopover={false}
-            //   actionGroup={bind(item, "actionGroup").as((ag) => ["dbusmenu", ag])}
-            //   menuModel={bind(item, "menuModel")}
-            // >
-            //   <icon gicon={bind(item, "gicon")} />
-            // </menubutton>
-          )
+        items.map((item) => (
+          <menubutton
+            tooltipMarkup={bind(item, "tooltipMarkup")}
+            usePopover={false}
+            actionGroup={bind(item, "actionGroup").as((ag) => ["dbusmenu", ag])}
+            menuModel={bind(item, "menuModel")}
+          >
+            <icon gicon={bind(item, "gicon")} />
+          </menubutton>
+        ))
       )}
     </box>
   );
