@@ -57,12 +57,14 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
 
 // left
 export function LauncherIcon(): Gtk.Widget {
+  const endeavourosIcon = "endeavouros-no-name";
+  const iconName = lookupIcon(endeavourosIcon)
+    ? endeavourosIcon
+    : GLib.get_os_info("LOGO") ?? "go-home-symbolic";
+
   return (
     <button onClick={() => console.log("TODO: show app launcher")}>
-      <icon
-        icon={GLib.get_os_info("LOGO") ?? "go-home-symbolic"}
-        className="LauncherIcon"
-      />
+      <icon icon={iconName} className="LauncherIcon" />
     </button>
   );
 }

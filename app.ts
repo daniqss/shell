@@ -7,6 +7,7 @@ import defaultApp from "./lib/default_app";
 
 App.start({
   css: style,
+  icons: "./icons",
   main: () => {
     App.get_monitors().map(Bar);
     App.get_monitors().map(OSD);
