@@ -157,13 +157,16 @@ export function FocusedClient(): Gtk.Widget {
               );
             })}
           />
-          <label
-            label={focused.as((focused) => {
-              return focused.title ?? "unknown";
-            })}
-            truncate={true}
-            maxWidthChars={32}
-          />
+          {focused.as(
+            (client) =>
+              client && (
+                <label
+                  label={bind(client, "title").as(String)}
+                  truncate={true}
+                  maxWidthChars={32}
+                />
+              )
+          )}
         </box>
       </box>
     </revealer>
