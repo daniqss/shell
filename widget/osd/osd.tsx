@@ -1,85 +1,105 @@
-import { App, Astal, Gdk, Gtk, Widget } from "astal/gtk3";
-import { bind } from "astal";
+import { App, Astal, Gdk, Gtk } from "astal/gtk3";
 import { timeout } from "astal/time";
 import Variable from "astal/variable";
-import Brightness from "../../service/Brightness";
-import Progress from "./progress";
+import Brightness from "../../service/brightness";
 import Wp from "gi://AstalWp";
 
-const DELAY = 1000;
+export default function OSD(monitor: Gdk.Monitor) {
+  const visible = Variable(false);
 
-function OnScreenProgress(window: Astal.Window, vertical: boolean) {
-  const speaker = Wp.get_default()?.audio.defaultSpeaker!;
+  return (
+    <window
+      gdkmonitor={monitor}
+      className="OSD"
+      namespace="osd"
+      application={App}
+      layer={Astal.Layer.OVERLAY}
+      keymode={Astal.Keymode.ON_DEMAND}
+      anchor={Astal.WindowAnchor.BOTTOM}
+    >
+      <eventbox valign={Gtk.Align.END} onClick={() => visible.set(false)}>
+        <OnScreenProgress visible={visible} />
+      </eventbox>
+    </window>
+  );
+}
 
-  const indicator = new Widget.Icon({
-    pixelSize: 20,
-    valign: Gtk.Align.CENTER,
-    icon: bind(speaker, "volumeIcon"),
-  });
+function OnScreenProgress({ visible }: { visible: Variable<boolean> }) {
+  const brightness = Brightness.get_default();
+  const speaker = Wp.get_default()?.get_default_speaker();
 
-  const progress = Progress({
-    vertical,
-    width: vertical ? 48 : 400,
-    height: vertical ? 400 : 48,
-    child: indicator,
-  });
+  const iconName = Variable("");
+  const value = Variable(0);
+  const muted = Variable(false);
+  const volumeOrBrightness = Variable(false);
 
   let count = 0;
-
-  function show(value: number, icon: string, muted: boolean) {
-    window.visible = true;
-    indicator.icon = icon;
-    progress.setValue(value, muted);
+  function show(v: number, icon: string, isMuted: boolean = false) {
+    visible.set(true);
+    value.set(v);
+    iconName.set(icon);
+    muted.set(isMuted);
+    volumeOrBrightness.set(icon === "display-brightness-symbolic");
     count++;
-    timeout(DELAY, () => {
+    timeout(2000, () => {
       count--;
-      if (count === 0) window.visible = false;
+      if (count === 0) visible.set(false);
     });
   }
 
   return (
-    <box
-      className="indicator"
-      halign={Gtk.Align.CENTER}
+    <revealer
       valign={Gtk.Align.END}
-      css="min-height: 2px;"
-      child={progress}
-      setup={() => {
-        progress.hook(speaker, "notify::mute", () => {
-          progress.setMute(speaker.mute);
-        });
-        progress.hook(speaker, "notify::volume", () => {
-          return show(speaker.volume, speaker.volumeIcon, speaker.mute);
-        });
+      transitionType={Gtk.RevealerTransitionType.SLIDE_UP}
+      revealChild={visible()}
+      setup={(self) => {
+        self.hook(brightness, "notify::screen", () =>
+          show(brightness.screen, "display-brightness-symbolic")
+        );
 
-        if (Brightness) {
-          progress.hook(Brightness, () =>
-            show(Brightness!.screen, "display-brightness-symbolic", false)
+        if (speaker) {
+          self.hook(speaker, "notify::volume", () =>
+            show(speaker.volume, speaker.volumeIcon, speaker.mute)
+          );
+          self.hook(speaker, "notify::mute", () =>
+            show(speaker.volume, speaker.volumeIcon, speaker.mute)
           );
         }
       }}
-    ></box>
-  );
-}
-
-export default function OSD(monitor: Gdk.Monitor) {
-  // const visible = Variable(false);
-
-  return (
-    <window
-      visible={false}
-      className="OSD"
-      namespace="osd"
-      gdkmonitor={monitor}
-      layer={Astal.Layer.OVERLAY}
-      anchor={Astal.WindowAnchor.BOTTOM}
-      setup={(self) => {
-        self.add(
-          <box className="osd" vertical={true}>
-            {OnScreenProgress(self, false)}
+    >
+      <box className="OSDContainer" vertical={true}>
+        <centerbox
+          className="OSDTitle"
+          startWidget={
+            <label
+              hexpand={true}
+              halign={Gtk.Align.START}
+              label={volumeOrBrightness((vOrB) =>
+                vOrB ? "Brightness" : "Volume"
+              )}
+            />
+          }
+          endWidget={
+            <label
+              hexpand={true}
+              halign={Gtk.Align.END}
+              label={value((v) => `${Math.floor(v * 100)}%`)}
+            />
+          }
+        ></centerbox>
+        <box className="OSD" vertical={true}>
+          <box>
+            <icon icon={iconName()} />
+            <levelbar
+              valign={Gtk.Align.CENTER}
+              hexpand={true}
+              widthRequest={140}
+              value={value()}
+              className={muted() ? "muted" : ""}
+            />
           </box>
-        );
-      }}
-    ></window>
+        </box>
+      </box>
+    </revealer>
   );
 }

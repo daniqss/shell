@@ -1,30 +1,63 @@
-@use "../../theme.scss" as *;
 @use "sass:color";
+@use "../../theme.scss" as *;
 
-.OSD,
-.osd {
-  background: transparent;
-  icon {
-    font-size: 16px;
-    margin-left: 16px;
+window.OSD {
+  box.OSDContainer {
+    font-family: $font;
+    // border: none;
+    // box-shadow: none;
+    background-color: $bg;
+    color: $fg;
+    font-size: 0.9em;
+    font-weight: bold;
+    border-radius: 15px;
+    // padding: 13px 16px;
+    margin: 13px;
+    box-shadow: 3px 3px 7px 0 rgba(0, 0, 0, 0.4);
   }
-}
 
-.indicator .progress {
-  padding: 0px;
+  centerbox.OSDTitle {
+    background-color: color.adjust($bg, $lightness: 10%);
+    border-radius: 15px 15px 0 0;
+    padding: 4px 12px;
+    // margin: -13px -13px 13px -13px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: $fg;
+    label {
+      font-size: 1rem;
+    }
+  }
 
-  border-radius: 100px;
-  margin-bottom: 20px;
-  background-color: color.adjust($bg, $alpha: -0.2);
-  .fill {
-    transition: background-color 3s ease-in-out;
-    border-radius: 100px;
-    background-color: $accent;
-    color: #caa6f7;
-    transition: min-width 0.1s;
-    &.muted {
-      background-color: $bg;
-      color: $fg;
+  box.OSD {
+    padding: 14px 6px;
+    // margin: 0 -13px -13px -13px;
+    border-radius: 0 0 20px 20px;
+  }
+
+  icon {
+    font-size: 1.5rem;
+    margin: 0 0.6rem;
+  }
+
+  levelbar {
+    color: $fg;
+    trough {
+      margin: 0 0.6rem;
+    }
+
+    min-width: 4rem;
+    block {
+      // background-color: color.adjust($bg, $lightness: 10%);
+      border-radius: 30px;
+      min-height: 1.2rem;
+      &.empty {
+        background: color.adjust($bg, $lightness: 10%);
+      }
+
+      &.filled {
+        background: $fg;
+      }
     }
   }
 }
