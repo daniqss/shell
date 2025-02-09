@@ -163,7 +163,7 @@ export function FocusedClient(): Gtk.Widget {
                 <label
                   label={bind(client, "title").as(String)}
                   truncate={true}
-                  maxWidthChars={32}
+                  maxWidthChars={86}
                 />
               )
           )}
