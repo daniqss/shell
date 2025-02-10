@@ -83,7 +83,7 @@ function OnScreenProgress({ visible }: { visible: Variable<boolean> }) {
             <label
               hexpand={true}
               halign={Gtk.Align.END}
-              label={value((v) => `${Math.floor(v * 100)}%`)}
+              label={value((v) => `${Math.round(v * 100)}%`)}
             />
           }
         ></centerbox>
