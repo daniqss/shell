@@ -72,6 +72,7 @@ export function LauncherIcon(): Gtk.Widget {
 // workspaces widget
 export function Workspaces(): Gtk.Widget {
   const hypr = Hyprland.get_default();
+  let scrollCooldown = 0;
 
   // executed when workspaces container is clicked
   function onContainerClick(event: Astal.ClickEvent) {
@@ -81,11 +82,13 @@ export function Workspaces(): Gtk.Widget {
   }
 
   function onContainerScroll(event: Astal.ScrollEvent) {
-    if (event.delta_y >= 0) {
-      moveToWorkspaceSilent(hypr.focused_workspace.id + 1);
-    } else if (event.delta_y < 0) {
-      moveToWorkspaceSilent(hypr.focused_workspace.id - 1);
-    }
+    const now = Date.now();
+    const cooldownTime = 85;
+
+    if (now - scrollCooldown < cooldownTime) return;
+    scrollCooldown = now;
+
+    moveToWorkspaceSilent(hypr.focusedWorkspace.id + Math.sign(event.delta_y));
   }
 
   // determine workspace class depending on if it's active, focused or empty
