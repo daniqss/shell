@@ -80,6 +80,14 @@ export function Workspaces(): Gtk.Widget {
     }
   }
 
+  function onContainerScroll(event: Astal.ScrollEvent) {
+    if (event.delta_y >= 0) {
+      moveToWorkspaceSilent(hypr.focused_workspace.id + 1);
+    } else if (event.delta_y < 0) {
+      moveToWorkspaceSilent(hypr.focused_workspace.id - 1);
+    }
+  }
+
   // determine workspace class depending on if it's active, focused or empty
   function bindWorkspaceClass(
     workspace: Hyprland.Workspace | undefined,
@@ -109,6 +117,7 @@ export function Workspaces(): Gtk.Widget {
     <eventbox
       onClick={(_, event) => onContainerClick(event)}
       className="WorkspacesContainer"
+      onScroll={(_, event) => onContainerScroll(event)}
     >
       <box className="Workspaces" vexpand={false} visible={true}>
         {bind(hypr, "workspaces").as((wss) =>
