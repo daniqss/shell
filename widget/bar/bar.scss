@@ -5,13 +5,20 @@ window.Bar {
   font-family: $font;
   border: none;
   box-shadow: none;
+  // background-color: transparent;
   background-color: $bg;
   color: $fg;
   font-size: 0.9em;
   font-weight: bold;
 
+  // .BarContainer {
+  //   // margin: 0.4em;
+  //   // background-color: $bg;
+  //   // border-radius: $radius * 3;
+  // }
+
   .Left {
-    margin: 0.3em 0 0.3em 0.5em;
+    margin: 0.3em 0 0.3em 0.65em;
     button {
       all: unset;
       background-color: $bg;
@@ -31,6 +38,7 @@ window.Bar {
   }
 
   .LauncherIcon {
+    background-color: transparent;
     font-size: 1.5em;
     padding-right: 0.3em;
   }
@@ -97,7 +105,7 @@ window.Bar {
   }
 
   .AppIcon {
-    font-size: 1.4rem;
+    font-size: 1.4em;
   }
 
   .Right {
@@ -146,7 +154,7 @@ window.Bar {
       }
 
       .Time {
-        margin: 0 0.5em 0 0.8em;
+        margin: 0 0.8em 0 0.6em;
       }
     }
   }

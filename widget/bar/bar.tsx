@@ -25,6 +25,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
       application={App}
     >
       <centerbox
+        className="BarContainer"
         startWidget={
           <box className="Left" hexpand halign={Gtk.Align.START}>
             <LauncherIcon />
@@ -294,13 +295,15 @@ export function BatteryIcon() {
   );
 }
 
-export function Clock({ format = "%H:%M" }) {
+export function Clock({ format = "%H:%M  %d-%m-%y" }: { format?: string }) {
   const time = Variable<string>("").poll(
     1000,
     () => GLib.DateTime.new_now_local().format(format)!
   );
 
   return (
-    <label className="Time" onDestroy={() => time.drop()} label={time()} />
+    <box className="Time">
+      <label onDestroy={() => time.drop()} label={time()} />
+    </box>
   );
 }
