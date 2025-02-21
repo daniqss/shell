@@ -14,9 +14,16 @@ WIP shell made with [astal](https://aylur.github.io/astal/) and [ags](https://ay
 you must need some dependencies
 - ags
 - astal
-- hyprqtile (if you don't want it, just change [the Workspaces widget](widget/left.tsx))
 - dart-sass
+- hyprland
+- uwsm
 
+```bash
+# with chaotic aur repository
+sudo pacman -S astal-meta hyprland uwsm dart-sass
+```
+
+then clone the repo
 ```bash
 git clone https://github.com/daniqss/shell
 cd shell
