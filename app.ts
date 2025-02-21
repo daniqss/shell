@@ -3,6 +3,7 @@ import style from "./app.scss";
 import Bar from "./widget/bar/bar";
 // import Applauncher from "./widget/applauncher/applauncher";
 import OSD from "./widget/osd/osd";
+import NotificationPopups from "./widget/notifications/notification-popup";
 import defaultApp from "./lib/default_app";
 
 // entry point of the shell, where we determine
@@ -21,25 +22,30 @@ App.start({
 function main() {
   const bars = new Map<Gdk.Monitor, Gtk.Widget>();
   const osds = new Map<Gdk.Monitor, Gtk.Widget>();
+  // const notifications = new Map<Gdk.Monitor, Gtk.Widget>();
 
   // for each monitor, asoociate the monitor with its widgets
   for (const gdkmonitor of App.get_monitors()) {
     bars.set(gdkmonitor, Bar(gdkmonitor));
     osds.set(gdkmonitor, OSD(gdkmonitor));
+    // notifications.set(gdkmonitor, NotificationPopups(gdkmonitor));
   }
 
   // when a monitor is connected, it creates and associates the monitor with its widgets
   App.connect("monitor-added", (_, gdkmonitor) => {
     bars.set(gdkmonitor, Bar(gdkmonitor));
     osds.set(gdkmonitor, OSD(gdkmonitor));
+    // notifications.set(gdkmonitor, NotificationPopups(gdkmonitor));
   });
 
   // when its unplugged, it destroys the widgets associated with the monitor
   App.connect("monitor-removed", (_, gdkmonitor) => {
     bars.get(gdkmonitor)?.destroy();
     osds.get(gdkmonitor)?.destroy();
+    // notifications.get(gdkmonitor)?.destroy();
     bars.delete(gdkmonitor);
     osds.delete(gdkmonitor);
+    // notifications.delete(gdkmonitor);
   });
 }
 
