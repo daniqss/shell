@@ -12,8 +12,8 @@ export default function defaultApp(id?: number) {
   const apps: { [key: number]: string } = {
     1: "code",
     2: "chromium",
-    3: `alacritty --working-directory /home/daniqss/`,
-    4: "obsidian --enable-features=UseOzonePlatform, WaylandWindowDecorations --ozone-platform=wayland",
+    3: "alacritty",
+    4: "obsidian",
     5: "nautilus",
     6: "vesktop --enable-features=UseOzonePlatform, WaylandWindowDecorations --ozone-platform=wayland",
     7: "steam",
@@ -24,6 +24,6 @@ export default function defaultApp(id?: number) {
   execAsync([
     "bash",
     "-c",
-    `hyprctl dispatch -- exec [workspace ${workspace} silent] ${apps[workspace]}`,
+    `hyprctl dispatch -- exec [workspace ${workspace} silent] uwsm app -- ${apps[workspace]}`,
   ]).catch((err) => console.error(err));
 }
