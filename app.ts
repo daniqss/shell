@@ -2,8 +2,8 @@ import { App, Gdk, Gtk } from "astal/gtk3";
 import style from "./app.scss";
 import Bar from "./widget/bar/bar";
 import OSD from "./widget/osd/osd";
+import Applauncher from "widget/applauncher/applauncher";
 // import NotificationPopups from "./widget/notifications/notification-popup";
-// import Applauncher from "widget/applauncher/applauncher";
 import defaultApp from "./lib/default_app";
 
 // entry point of the shell, where we determine
@@ -23,7 +23,7 @@ function main() {
   const windows: Array<(gdkmonitor: Gdk.Monitor) => Gtk.Widget> = [
     Bar,
     OSD,
-    // Applauncher,
+    Applauncher,
     // NotificationPopups,
   ];
 

@@ -5,7 +5,7 @@ import { Variable } from "astal";
 const MAX_ITEMS = 8;
 
 function hide() {
-  App.get_window("launcher")!.hide();
+  App.get_window("applauncher")!.hide();
 }
 
 function AppButton({ app }: { app: Apps.Application }) {
@@ -38,6 +38,7 @@ function AppButton({ app }: { app: Apps.Application }) {
 export default function Applauncher() {
   const { CENTER } = Gtk.Align;
   const apps = new Apps.Apps();
+  const width = Variable(1000);
 
   const text = Variable("");
   const list = text((text) => apps.fuzzy_query(text).slice(0, MAX_ITEMS));
@@ -49,18 +50,20 @@ export default function Applauncher() {
   return (
     <window
       name="applauncher"
-      visible={false}
       anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.BOTTOM}
       exclusivity={Astal.Exclusivity.IGNORE}
       keymode={Astal.Keymode.ON_DEMAND}
-      setup={(self) => App.add_window(self)}
-      onShow={() => text.set("")}
+      application={App}
+      onShow={(self) => {
+        text.set("");
+        width.set(self.get_current_monitor().workarea.width);
+      }}
       onKeyPressEvent={function (self, event: Gdk.Event) {
         if (event.get_keyval()[1] === Gdk.KEY_Escape) self.hide();
       }}
     >
       <box>
-        <eventbox widthRequest={4000} expand onClick={hide} />
+        <eventbox widthRequest={width((w) => w / 2)} expand onClick={hide} />
         <box hexpand={false} vertical>
           <eventbox heightRequest={100} onClick={hide} />
           <box widthRequest={500} className="Applauncher" vertical>
@@ -85,7 +88,7 @@ export default function Applauncher() {
           </box>
           <eventbox expand onClick={hide} />
         </box>
-        <eventbox widthRequest={4000} expand onClick={hide} />
+        <eventbox widthRequest={width((w) => w / 2)} expand onClick={hide} />
       </box>
     </window>
   );
