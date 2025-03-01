@@ -15,7 +15,7 @@ export default function defaultApp(id?: number) {
     3: "alacritty",
     4: "obsidian",
     5: "nautilus",
-    6: "vesktop --enable-features=UseOzonePlatform, WaylandWindowDecorations --ozone-platform=wayland",
+    6: "vesktop",
     7: "steam",
     8: "spotify-launcher",
     9: "google-chrome-stable",
