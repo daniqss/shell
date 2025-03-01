@@ -1,9 +1,9 @@
 import { App, Gdk, Gtk } from "astal/gtk3";
 import style from "./app.scss";
 import Bar from "./widget/bar/bar";
-// import Applauncher from "./widget/applauncher/applauncher";
 import OSD from "./widget/osd/osd";
-import NotificationPopups from "./widget/notifications/notification-popup";
+// import NotificationPopups from "./widget/notifications/notification-popup";
+// import Applauncher from "widget/applauncher/applauncher";
 import defaultApp from "./lib/default_app";
 
 // entry point of the shell, where we determine
@@ -20,33 +20,26 @@ App.start({
 
 // main function where must be created the used widgets
 function main() {
-  const bars = new Map<Gdk.Monitor, Gtk.Widget>();
-  const osds = new Map<Gdk.Monitor, Gtk.Widget>();
-  // const notifications = new Map<Gdk.Monitor, Gtk.Widget>();
+  const windows: Array<(gdkmonitor: Gdk.Monitor) => Gtk.Widget> = [
+    Bar,
+    OSD,
+    // Applauncher,
+    // NotificationPopups,
+  ];
 
-  // for each monitor, asoociate the monitor with its widgets
-  for (const gdkmonitor of App.get_monitors()) {
-    bars.set(gdkmonitor, Bar(gdkmonitor));
-    osds.set(gdkmonitor, OSD(gdkmonitor));
-    // notifications.set(gdkmonitor, NotificationPopups(gdkmonitor));
+  for (const window of windows) {
+    const windowMaps = new Map<Gdk.Monitor, Gtk.Widget>();
+    for (const gdkmonitor of App.get_monitors()) {
+      windowMaps.set(gdkmonitor, window(gdkmonitor));
+    }
+    App.connect("monitor-added", (_, gdkmonitor) =>
+      windowMaps.set(gdkmonitor, window(gdkmonitor))
+    );
+    App.connect("monitor-removed", (_, gdkmonitor) => {
+      windowMaps.get(gdkmonitor)?.destroy();
+      windowMaps.delete(gdkmonitor);
+    });
   }
-
-  // when a monitor is connected, it creates and associates the monitor with its widgets
-  App.connect("monitor-added", (_, gdkmonitor) => {
-    bars.set(gdkmonitor, Bar(gdkmonitor));
-    osds.set(gdkmonitor, OSD(gdkmonitor));
-    // notifications.set(gdkmonitor, NotificationPopups(gdkmonitor));
-  });
-
-  // when its unplugged, it destroys the widgets associated with the monitor
-  App.connect("monitor-removed", (_, gdkmonitor) => {
-    bars.get(gdkmonitor)?.destroy();
-    osds.get(gdkmonitor)?.destroy();
-    // notifications.get(gdkmonitor)?.destroy();
-    bars.delete(gdkmonitor);
-    osds.delete(gdkmonitor);
-    // notifications.delete(gdkmonitor);
-  });
 }
 
 // request handler, with which we can send messages like

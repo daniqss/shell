@@ -11,7 +11,7 @@ import defaultApp from "../../lib/default_app";
 import { moveToWorkspaceSilent } from "../../lib/workspace";
 import { iconFallback, lookupIcon, iconSustitutions } from "../../lib/icons";
 
-export default function Bar(gdkmonitor: Gdk.Monitor) {
+export default function Bar(gdkmonitor: Gdk.Monitor): Gtk.Widget {
   return (
     <window
       className="Bar"

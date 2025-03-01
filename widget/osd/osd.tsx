@@ -4,7 +4,7 @@ import Variable from "astal/variable";
 import Brightness from "../../service/brightness";
 import Wp from "gi://AstalWp";
 
-export default function OSD(monitor: Gdk.Monitor) {
+export default function OSD(monitor: Gdk.Monitor): Gtk.Widget {
   const visible = Variable(false);
 
   return (
