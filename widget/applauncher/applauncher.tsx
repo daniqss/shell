@@ -3,9 +3,10 @@ import { App, Astal, Gdk, Gtk } from "astal/gtk3";
 import { Variable } from "astal";
 
 const MAX_ITEMS = 8;
+const WINDOW_NAME = "applauncher";
 
 function hide() {
-  App.get_window("applauncher")!.hide();
+  App.get_window(WINDOW_NAME)?.set_visible(false);
 }
 
 function AppButton({ app }: { app: Apps.Application }) {
@@ -41,6 +42,7 @@ export default function Applauncher() {
   const width = Variable(1000);
 
   const text = Variable("");
+  const isLaunching = Variable(true);
   const list = text((text) => apps.fuzzy_query(text).slice(0, MAX_ITEMS));
   const onEnter = () => {
     apps.fuzzy_query(text.get())?.[0].launch();
@@ -49,12 +51,16 @@ export default function Applauncher() {
 
   return (
     <window
-      name="applauncher"
+      name={WINDOW_NAME}
       anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.BOTTOM}
       exclusivity={Astal.Exclusivity.IGNORE}
       keymode={Astal.Keymode.ON_DEMAND}
       application={App}
       onShow={(self) => {
+        if (isLaunching.get()) {
+          isLaunching.set(false);
+          self.hide();
+        }
         text.set("");
         width.set(self.get_current_monitor().workarea.width);
       }}

@@ -1,24 +1,29 @@
 @use "sass:color";
 @use "../../theme.scss" as *;
 
-window.Bar {
-  font-family: $font;
-  border: none;
-  box-shadow: none;
-  // background-color: transparent;
-  background-color: $bg;
-  color: $fg;
-  font-size: 0.9em;
-  font-weight: bold;
+window {
+  background-color: transparent;
+  margin: 20px;
+}
 
-  // .BarContainer {
-  //   // margin: 0.4em;
-  //   // background-color: $bg;
-  //   // border-radius: $radius * 3;
-  // }
+.Bar {
+  background-color: transparent;
+
+  .BarContainer {
+    font-family: $font;
+    border: none;
+    box-shadow: none;
+    background-color: $bg;
+    color: $fg;
+    font-size: 0.9em;
+    font-weight: bold;
+    // margin: 3px 10px 0px 10px;
+    // border-radius: $radius * 3;
+  }
 
   .Left {
-    margin: 0.3em 0 0.3em 0.65em;
+    margin: 0em 1em;
+
     button {
       all: unset;
       background-color: $bg;
@@ -49,14 +54,12 @@ window.Bar {
   .WorkspacesContainer {
     box {
       border-radius: $radius * 3;
-      padding: 0 0em 0 0em;
-      margin: 0 0em 0 0.2em;
       background-color: $bg;
       transition: background-color 0.22s ease;
     }
     &:hover {
       box {
-        background-color: color.adjust($bg, $lightness: 5%);
+        background-color: $bg;
       }
     }
     .Workspaces {
@@ -95,13 +98,13 @@ window.Bar {
       }
 
       .ActiveWorkspace {
-        background-color: $accent;
+        background-color: $fg;
       }
     }
   }
 
   .FocusedClient {
-    color: $accent;
+    color: $fg;
   }
 
   .AppIcon {
@@ -109,8 +112,7 @@ window.Bar {
   }
 
   .Right {
-    all: unset;
-    margin: 0.3em 0.5em 0.3em 0px;
+    margin: 0em 1em;
 
     .SysTray {
       button {
@@ -154,7 +156,7 @@ window.Bar {
       }
 
       .Time {
-        margin: 0 0.8em 0 0.6em;
+        margin: 0 0em 0 0.6em;
       }
     }
   }

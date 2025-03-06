@@ -11,11 +11,11 @@ import defaultApp from "../../lib/default_app";
 import { moveToWorkspaceSilent } from "../../lib/workspace";
 import { iconFallback, lookupIcon, iconSustitutions } from "../../lib/icons";
 
-export default function Bar(gdkmonitor: Gdk.Monitor): Gtk.Widget {
+export default function Bar(monitor: Gdk.Monitor): Gtk.Widget {
   return (
     <window
       className="Bar"
-      gdkmonitor={gdkmonitor}
+      gdkmonitor={monitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
       anchor={
         Astal.WindowAnchor.TOP |
@@ -28,7 +28,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor): Gtk.Widget {
         className="BarContainer"
         startWidget={
           <box className="Left" hexpand halign={Gtk.Align.START}>
-            <LauncherIcon />
+            {/* <LauncherIcon /> */}
             <Workspaces />
           </box>
         }
@@ -57,18 +57,18 @@ export default function Bar(gdkmonitor: Gdk.Monitor): Gtk.Widget {
 }
 
 // left
-export function LauncherIcon(): Gtk.Widget {
-  const endeavourosIcon = "endeavouros-no-name";
-  const iconName = lookupIcon(endeavourosIcon)
-    ? endeavourosIcon
-    : GLib.get_os_info("LOGO") ?? "go-home-symbolic";
+// export function LauncherIcon(): Gtk.Widget {
+//   const endeavourosIcon = "endeavouros-no-name";
+//   const iconName = lookupIcon(endeavourosIcon)
+//     ? endeavourosIcon
+//     : GLib.get_os_info("LOGO") ?? "go-home-symbolic";
 
-  return (
-    <button onClick={() => console.log("TODO: show app launcher")}>
-      <icon icon={iconName} className="LauncherIcon" />
-    </button>
-  );
-}
+//   return (
+//     <button onClick={() => console.log("TODO: show app launcher")}>
+//       <icon icon={iconName} className="LauncherIcon" />
+//     </button>
+//   );
+// }
 
 // workspaces widget
 export function Workspaces(): Gtk.Widget {

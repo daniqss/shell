@@ -1,7 +1,8 @@
 @use "sass:color";
 
-$bg: #000000;
+$bg: #0c0c0c;
+$transparent_bg: color.scale($bg, $alpha: -5%);
 $fg: #f5e0dc;
-$accent: #f5e0dc;
+$accent: #252525;
 $radius: 7px;
-$font: "Cantarell Extra Bold";
+$font: "Ubuntu Nerd Font";
