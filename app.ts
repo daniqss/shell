@@ -1,8 +1,8 @@
 import { App, Gdk, Gtk } from "astal/gtk3";
 import style from "./app.scss";
-import Bar from "./widget/bar/bar";
-import OSD from "./widget/osd/osd";
-import Applauncher from "./widget/applauncher/applauncher";
+import Bar from "./widget/bar/Bar";
+import OSD from "./widget/osd/OSD";
+import Applauncher from "./widget/applauncher/Applauncher";
 // import NotificationPopups from "./widget/notifications/notification-popup";
 import defaultApp from "./lib/default_app";
 

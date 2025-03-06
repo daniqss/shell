@@ -4,6 +4,8 @@ import Variable from "astal/variable";
 import Brightness from "../../service/brightness";
 import Wp from "gi://AstalWp";
 
+const WINDOW_NAME = "OSD";
+
 export default function OSD(monitor: Gdk.Monitor): Gtk.Widget {
   const visible = Variable(false);
 
@@ -11,7 +13,8 @@ export default function OSD(monitor: Gdk.Monitor): Gtk.Widget {
     <window
       gdkmonitor={monitor}
       className="OSD"
-      namespace="osd"
+      name={WINDOW_NAME}
+      namespace={WINDOW_NAME}
       application={App}
       layer={Astal.Layer.OVERLAY}
       keymode={Astal.Keymode.ON_DEMAND}

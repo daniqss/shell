@@ -3,7 +3,7 @@ import { App, Astal, Gdk, Gtk } from "astal/gtk3";
 import { Variable } from "astal";
 
 const MAX_ITEMS = 8;
-const WINDOW_NAME = "applauncher";
+const WINDOW_NAME = "Applauncher";
 
 function hide() {
   App.get_window(WINDOW_NAME)?.set_visible(false);

@@ -11,10 +11,13 @@ import defaultApp from "../../lib/default_app";
 import { moveToWorkspaceSilent } from "../../lib/workspace";
 import { iconFallback, lookupIcon, iconSustitutions } from "../../lib/icons";
 
+const WINDOW_NAME = "Bar";
+
 export default function Bar(monitor: Gdk.Monitor): Gtk.Widget {
   return (
     <window
       className="Bar"
+      name={WINDOW_NAME}
       gdkmonitor={monitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
       anchor={
