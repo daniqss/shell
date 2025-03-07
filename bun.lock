@@ -1,0 +1,17 @@
+{
+  "lockfileVersion": 1,
+  "workspaces": {
+    "": {
+      "name": "astal-shell",
+      "dependencies": {
+        "astal": "/usr/share/astal/gjs",
+        "typescript": "5.7.1-rc",
+      },
+    },
+  },
+  "packages": {
+    "astal": ["astal@file:../../../../usr/share/astal/gjs", {}],
+
+    "typescript": ["typescript@5.7.1-rc", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-d6m+HT78uZtyUbXbUyIvuJ6kXCTSJEfy+2pZSUwt9d6JZ0kOMNDwhIILfV5FnaxMwVa48Yfw4sK0ISC4Qyq5tw=="],
+  }
+}

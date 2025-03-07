@@ -1,0 +1,7 @@
+{
+    "dependencies": {
+        "astal": "/usr/share/astal/gjs",
+        "typescript": "5.7.1-rc"
+    },
+    "name": "astal-shell"
+}

@@ -38,7 +38,7 @@ function AppButton({ app }: { app: Apps.Application }) {
 
 export default function Applauncher() {
   const { CENTER } = Gtk.Align;
-  const apps = new Apps.Apps();
+  const apps = new Apps.Apps({});
   const width = Variable(1000);
 
   const text = Variable("");
