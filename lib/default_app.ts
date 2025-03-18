@@ -12,7 +12,7 @@ export default function defaultApp(id?: number) {
   const apps: { [key: number]: string } = {
     1: "code",
     2: "chromium",
-    3: "alacritty",
+    3: "ghostty",
     4: "obsidian",
     5: "nautilus",
     6: "vesktop",
@@ -24,6 +24,6 @@ export default function defaultApp(id?: number) {
   execAsync([
     "bash",
     "-c",
-    `hyprctl dispatch -- exec [workspace ${workspace} silent] uwsm app -- ${apps[workspace]}`,
+    `hyprctl dispatch -- exec [workspace ${workspace} silent] $(uwsm app -- ${apps[workspace]})`,
   ]).catch((err) => console.error(err));
 }
